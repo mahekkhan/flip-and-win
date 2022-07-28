@@ -1,32 +1,30 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.util.Scanner;
+import java.io.*;
+import java.net.*;
 
 public class Client {
 
     private Socket socket;
-    private String playerName;
-    private BufferedReader reader;
-    private BufferedWriter writer;
+    private int playerID;
+    private DataInputStream dataIn;
+    private DataOutputStream dataOut;
 
-    public Client(Socket socket, String playerName){
+    public Client(){
+        System.out.println("----Client----");
         try{
-            this.socket = socket;
-            this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.playerName = playerName;
+            socket = new Socket("localhost", 51734);
+            dataIn = new DataInputStream(socket.getInputStream());
+            dataOut = new DataOutputStream(socket.getOutputStream());
+            playerID = dataIn.readInt();
+            System.out.println("Connected to server as Player #" + playerID + ".");  
         }
         catch (IOException e){
-            closeEverything(socket, reader, writer);
+            System.out.println("IO Exception");
+            closeEverything(socket, dataIn, dataOut);
         }
         
     }
         
-    public void closeEverything(Socket socket, BufferedReader reader, BufferedWriter writer){
+    public void closeEverything(Socket socket, DataInputStream reader, DataOutputStream writer){
         try{
             if(reader != null){
                 reader.close();
@@ -43,12 +41,6 @@ public class Client {
     }
      
     public static void main(String[] args){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Player Name: ");
-        String playerName = scanner.nextLine();
-
-        Socket socket = new Socket(host "localhost", port 1234);
-        Client client = new Client(socket, playerName);
 
     }
 
