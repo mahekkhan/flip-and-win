@@ -105,7 +105,7 @@ public class Server {
                         p1_point += values[p1_btn -1];
                     } else if(playerID == 2) {
                         p2_btn = in.readInt();
-                        System.out.println("p1 clicked button: " + p2_btn);
+                        System.out.println("p2 clicked button: " + p2_btn);
                         player1.bnum_clicked(p2_btn);
                         player3.bnum_clicked(p2_btn);
                         player4.bnum_clicked(p2_btn);
@@ -113,7 +113,7 @@ public class Server {
                         p2_point += values[p2_btn -1];
                     } else if(playerID == 3) {
                         p3_btn = in.readInt();
-                        System.out.println("p1 clicked button: " + p3_btn);
+                        System.out.println("p3 clicked button: " + p3_btn);
                         player2.bnum_clicked(p3_btn);
                         player1.bnum_clicked(p3_btn);
                         player4.bnum_clicked(p3_btn);
@@ -121,7 +121,7 @@ public class Server {
                         p3_point += values[p3_btn -1];
                     } else if(playerID == 4) {
                         p4_btn = in.readInt();
-                        System.out.println("p1 clicked button: " + p4_btn);
+                        System.out.println("p4 clicked button: " + p4_btn);
                         player2.bnum_clicked(p4_btn);
                         player3.bnum_clicked(p4_btn);
                         player1.bnum_clicked(p4_btn);
@@ -129,9 +129,14 @@ public class Server {
                         p4_point += values[p4_btn -1];
                     }
                     if(turnsMade == maxTurns) {
-                        int[] points = {p1_point, p2_point, p3_point, p4_point};
-
-                        
+                        Integer[] points = {p1_point, p2_point, p3_point, p4_point};
+                        int max = Collections.max(Arrays.asList(points));
+                        for(int i = 0; i< 4; i++){
+                            if(max == points[i]) {
+                                System.out.println("Player " + (i + 1) + " wins with " + max + " point!");
+                                break;
+                            }
+                        }
 
                     }
                 }
