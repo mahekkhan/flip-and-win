@@ -5,7 +5,6 @@ import java.net.*;
 import java.awt.event.*;
 //import javax.swing.JFrame.*;
 
-
 public class Client extends JFrame {
     private int width;
     private int height;
@@ -14,7 +13,7 @@ public class Client extends JFrame {
     private JButton b1;
     private JButton b2;
     private JButton b3;
-    private JButton b4; 
+    private JButton b4;
     private int id;
     private int turnsMade;
     private int maxTurns;
@@ -53,7 +52,7 @@ public class Client extends JFrame {
         contentPane.add(b3);
         contentPane.add(b4);
 
-        if( id == 1)
+        if (id == 1)
             buttonEnabled = true;
         else if (id == 2) {
             buttonEnabled = false;
@@ -62,36 +61,33 @@ public class Client extends JFrame {
                     updateTurn();
                 }
             });
-            t.start();    
-        }
-        else if (id == 3){
+            t.start();
+        } else if (id == 3) {
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     updateTurn();
                 }
             });
-            t.start();    
-        }
-        else if (id == 4){
+            t.start();
+        } else if (id == 4) {
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     updateTurn();
                 }
             });
-            t.start();    
+            t.start();
         }
 
         toggleButtons();
-        
+
         this.setVisible(true);
     }
 
     private void connect_Sever() {
         cc = new ClientConnect();
     }
-
 
     public void setUpButtons() {
         ActionListener al = new ActionListener() {
@@ -100,7 +96,7 @@ public class Client extends JFrame {
                 int bNUm = Integer.parseInt(b.getText());
                 turnsMade++;
                 System.out.println("Turns made: " + turnsMade);
-                myPoints += values[bNUm -1];
+                myPoints += values[bNUm - 1];
                 System.out.println("Points: " + myPoints);
                 buttonEnabled = false;
                 toggleButtons();
@@ -111,7 +107,7 @@ public class Client extends JFrame {
                         updateTurn();
                     }
                 });
-                t.start(); 
+                t.start();
             }
         };
 
@@ -120,7 +116,6 @@ public class Client extends JFrame {
         b3.addActionListener(al);
         b4.addActionListener(al);
 
-        
     }
 
     public void toggleButtons() {
@@ -143,13 +138,13 @@ public class Client extends JFrame {
         private DataOutputStream out;
 
         public ClientConnect() {
-            try{
-                s = new Socket("localhost", 2321);
+            try {
+                s = new Socket("localhost", 2322);
                 in = new DataInputStream(s.getInputStream());
                 out = new DataOutputStream(s.getOutputStream());
                 id = in.readInt();
                 System.out.println("Player ID is: " + id);
-                maxTurns = in.readInt()/4;
+                maxTurns = in.readInt() / 4;
                 values[0] = in.readInt();
                 values[1] = in.readInt();
                 values[2] = in.readInt();
@@ -158,6 +153,7 @@ public class Client extends JFrame {
                 System.out.println("ClientConnect");
             }
         }
+
         public void bnum_clicked(int n) {
             try {
                 out.writeInt(n);
@@ -166,6 +162,7 @@ public class Client extends JFrame {
                 System.out.println("bnum_clicked");
             }
         }
+
         public int bnum_received() {
             int n = -1;
             try {
