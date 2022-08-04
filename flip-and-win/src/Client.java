@@ -39,7 +39,7 @@ public class Client extends JFrame {
 
     public void setUpGUI() {
         this.setSize(width, height);
-        this.setTitle("Turn-based Game");
+        this.setTitle("Flip and Win Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane.setLayout(new GridLayout(1, 5));
         contentPane.add(message);
@@ -98,7 +98,7 @@ public class Client extends JFrame {
                 System.out.println("Turns made: " + turnsMade);
                 myPoints += values[bNUm - 1];
                 System.out.println("Points: " + myPoints);
-                buttonEnabled = false;
+                buttonEnabled = true;
                 toggleButtons();
                 cc.bnum_clicked(bNUm);
 
