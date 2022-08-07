@@ -109,7 +109,7 @@ public class Client extends JFrame {
                 if(bNUm == 1){
                     b1.setText(value);
                 }
-                else{
+                else (bNum == 2){
                     b2.setText(value);
                 }
                 else if(bNUm == 3)
