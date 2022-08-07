@@ -42,7 +42,7 @@ public class Client extends JFrame {
 
     public void setUpGUI() {
         this.setSize(width, height);
-        this.setTitle("Turn-based Game");
+        this.setTitle("Flip-and-Win Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane.setLayout(new GridLayout(1, 5));
         contentPane.add(message);
@@ -145,18 +145,18 @@ public class Client extends JFrame {
 
     public void updateTurn() {
         int n = cc.bnum_received();
-        System.out.println("Player 2 clicked button #" + n + ". Your turn.");
+        System.out.println("Other player clicked button #" + n + ". Your turn.");
         buttonEnabled = true;
         toggleButtons();
         for(int i = 0; i< 4; i++){
-        if( buttonClicked[i] == 1)
-            b1.setEnabled(false);
-        else if (buttonClicked[i] ==2) 
-            b2.setEnabled(false);
-        else if(buttonClicked[i] == 3)
-            b3.setEnabled(false);
-        else if(buttonClicked[i] == 4)
-            b4.setEnabled(false);
+            if( buttonClicked[i] == 1)
+                b1.setEnabled(false);
+            else if (buttonClicked[i] ==2) 
+                b2.setEnabled(false);
+            else if(buttonClicked[i] == 3)
+                b3.setEnabled(false);
+            else if(buttonClicked[i] == 4)
+                b4.setEnabled(false);
         }
         
     }
