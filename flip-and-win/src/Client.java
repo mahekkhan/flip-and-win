@@ -55,7 +55,7 @@ public class Client extends JFrame {
 
         if( id == 1)
             buttonEnabled = true;
-        else if (id == 2) {
+        else {
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
@@ -64,7 +64,7 @@ public class Client extends JFrame {
             });
             t.start();    
         }
-        else if (id == 3){
+        /*else if (id == 3){
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
@@ -81,7 +81,7 @@ public class Client extends JFrame {
                 }
             });
             t.start();    
-        }
+        }*/
 
         toggleButtons();
         
@@ -106,14 +106,16 @@ public class Client extends JFrame {
                 toggleButtons();
                 cc.bnum_clicked(bNUm);
                 String value = String.valueOf(values[bNUm - 1]);
-                if(bNUm == 1)
+                if(bNUm == 1){
                     b1.setText(value);
-                else if(bNUm == 2)
+                }
+                else{
                     b2.setText(value);
-                else if(bNUm == 3)
+                }
+                /*else if(bNUm == 3)
                     b3.setText(value);
                 else if(bNUm == 4)
-                    b4.setText(value);
+                    b4.setText(value);*/
 
                 Thread t = new Thread(new Runnable() {
                     public void run() {
@@ -141,16 +143,16 @@ public class Client extends JFrame {
 
     public void updateTurn() {
         int n = cc.bnum_received();
-        System.out.println("your turn.");
+        System.out.println("Player 2 clicked button #" + n + ". Your turn.");
         buttonEnabled = true;
-        if( n == 1)
+        /*( n == 1)
             b1.setEnabled(false);
-        else if(n == 2)
-            b2.setEnabled(false);
-        else if(n == 3)
+        else 
+            b2.setEnabled(false);*/
+        /*else if(n == 3)
             b3.setEnabled(false);
         else if(n == 4)
-            b4.setEnabled(false);
+            b4.setEnabled(false);*/
         toggleButtons();
     }
 
@@ -188,14 +190,14 @@ public class Client extends JFrame {
             try {
                 n = in.readInt();
                 System.out.println("Another player clicked button: " + n);
-                if( n == 1)
+                /*if( n == 1)
                     b1.setEnabled(false);
-                else if(n == 2)
+                else
                     b2.setEnabled(false);
-                else if(n == 3)
+                /*else if(n == 3)
                     b3.setEnabled(false);
                 else if(n == 4)
-                    b4.setEnabled(false);
+                    b4.setEnabled(false);*/
             } catch (IOException ex) {
                 System.out.println("bnum_received");
             }
