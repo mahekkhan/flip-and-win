@@ -112,10 +112,10 @@ public class Client extends JFrame {
                 else{
                     b2.setText(value);
                 }
-                /*else if(bNUm == 3)
+                else if(bNUm == 3)
                     b3.setText(value);
                 else if(bNUm == 4)
-                    b4.setText(value);*/
+                    b4.setText(value);
 
                 Thread t = new Thread(new Runnable() {
                     public void run() {
