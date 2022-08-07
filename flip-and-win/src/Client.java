@@ -21,6 +21,7 @@ public class Client extends JFrame {
     private int[] values;
     private int myPoints;
     private boolean buttonEnabled;
+    private int[] buttonClicked;
 
     private ClientConnect cc;
 
@@ -36,6 +37,7 @@ public class Client extends JFrame {
         turnsMade = 0;
         myPoints = 0;
         values = new int[4];
+        buttonClicked = new int[4];
     }
 
     public void setUpGUI() {
@@ -109,14 +111,14 @@ public class Client extends JFrame {
                 if(bNUm == 1){
                     b1.setText(value);
                 }
-                else if(bNum == 2){
+                else if(bNUm == 2){
                     b2.setText(value);
                 }
                 else if(bNUm == 3)
                     b3.setText(value);
                 else if(bNUm == 4)
                     b4.setText(value);
-
+                buttonClicked[bNUm - 1] = bNUm;
                 Thread t = new Thread(new Runnable() {
                     public void run() {
                         updateTurn();
@@ -145,15 +147,18 @@ public class Client extends JFrame {
         int n = cc.bnum_received();
         System.out.println("Player 2 clicked button #" + n + ". Your turn.");
         buttonEnabled = true;
-        /*( n == 1)
-            b1.setEnabled(false);
-        else 
-            b2.setEnabled(false);*/
-        /*else if(n == 3)
-            b3.setEnabled(false);
-        else if(n == 4)
-            b4.setEnabled(false);*/
         toggleButtons();
+        for(int i = 0; i< 4; i++){
+        if( buttonClicked[i] == 1)
+            b1.setEnabled(false);
+        else if (buttonClicked[i] ==2) 
+            b2.setEnabled(false);
+        else if(buttonClicked[i] == 3)
+            b3.setEnabled(false);
+        else if(buttonClicked[i] == 4)
+            b4.setEnabled(false);
+        }
+        
     }
 
     private class ClientConnect {
@@ -168,7 +173,7 @@ public class Client extends JFrame {
                 out = new DataOutputStream(s.getOutputStream());
                 id = in.readInt();
                 System.out.println("Player ID is: " + id);
-                maxTurns = in.readInt()/4;
+                maxTurns = in.readInt()/2;
                 values[0] = in.readInt();
                 values[1] = in.readInt();
                 values[2] = in.readInt();
@@ -190,6 +195,7 @@ public class Client extends JFrame {
             try {
                 n = in.readInt();
                 System.out.println("Another player clicked button: " + n);
+                buttonClicked[n-1] = n;
                 /*if( n == 1)
                     b1.setEnabled(false);
                 else
