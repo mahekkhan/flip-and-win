@@ -78,7 +78,7 @@ public class Client extends JFrame {
                 System.out.println("Turns made: " + turnsMade);
                 myPoints += values[bNUm -1];
                 System.out.println("Points: " + myPoints);
-                buttonEnabled = false;
+                buttonEnabled = true;
                 toggleButtons();
                 cc.bnum_clicked(bNUm);
                 String value = String.valueOf(values[bNUm - 1]);
