@@ -3,18 +3,12 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.awt.event.*;
-//import javax.swing.JFrame.*;
 
 
 public class Client extends JFrame {
     private int width;
     private int height;
     private Container contentPane;
-    private JTextArea message;
-    private JButton b1;
-    private JButton b2;
-    private JButton b3;
-    private JButton b4; 
     private int id;
     private int turnsMade;
     private int maxTurns;
@@ -22,38 +16,36 @@ public class Client extends JFrame {
     private int myPoints;
     private boolean buttonEnabled;
     private int[] buttonClicked;
-
+    private JButton[] grid;
+    private int otherplayer_point;
     private ClientConnect cc;
 
     public Client(int w, int h) {
         width = w;
         height = h;
         contentPane = this.getContentPane();
-        message = new JTextArea();
-        b1 = new JButton("1");
-        b2 = new JButton("2");
-        b3 = new JButton("3");
-        b4 = new JButton("4");
+        
+        grid = new JButton[16];
+        for( int i = 0; i < 16; i++) {
+            String button_num = String.valueOf(i + 1);
+            grid[i] = new JButton(button_num);
+        }
+        
         turnsMade = 0;
         myPoints = 0;
-        values = new int[4];
-        buttonClicked = new int[4];
+        values = new int[16];
+        buttonClicked = new int[16];
     }
 
     public void setUpGUI() {
         this.setSize(width, height);
-        this.setTitle("Flip-and-Win Game");
+        this.setTitle("Flip-and-Win Game" + " Player " + id);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        contentPane.setLayout(new GridLayout(1, 5));
-        contentPane.add(message);
-        message.setText("Player " + id);
-        message.setWrapStyleWord(true);
-        message.setLineWrap(true);
-        message.setEditable(false);
-        contentPane.add(b1);
-        contentPane.add(b2);
-        contentPane.add(b3);
-        contentPane.add(b4);
+        contentPane.setLayout(new GridLayout(4, 4, 10, 10));
+        
+        for( int i = 0; i < 16; i++) {
+            contentPane.add(grid[i]);
+        }
 
         if( id == 1)
             buttonEnabled = true;
@@ -66,25 +58,7 @@ public class Client extends JFrame {
             });
             t.start();    
         }
-        /*else if (id == 3){
-            buttonEnabled = false;
-            Thread t = new Thread(new Runnable() {
-                public void run() {
-                    updateTurn();
-                }
-            });
-            t.start();    
-        }
-        else if (id == 4){
-            buttonEnabled = false;
-            Thread t = new Thread(new Runnable() {
-                public void run() {
-                    updateTurn();
-                }
-            });
-            t.start();    
-        }*/
-
+        
         toggleButtons();
         
         this.setVisible(true);
@@ -108,55 +82,74 @@ public class Client extends JFrame {
                 toggleButtons();
                 cc.bnum_clicked(bNUm);
                 String value = String.valueOf(values[bNUm - 1]);
-                if(bNUm == 1){
-                    b1.setText(value);
-                }
-                else if(bNUm == 2){
-                    b2.setText(value);
-                }
-                else if(bNUm == 3)
-                    b3.setText(value);
-                else if(bNUm == 4)
-                    b4.setText(value);
-                buttonClicked[bNUm - 1] = bNUm;
-                Thread t = new Thread(new Runnable() {
-                    public void run() {
-                        updateTurn();
+                
+                for(int i = 1; i<= 16; i++) {
+                    
+                    if(bNUm == i) {
+                        grid[i-1].setFont(new Font("Arial", Font.BOLD, 20));
+                        grid[i-1].setText(value);
                     }
-                });
-                t.start(); 
-            }
+                }
+                
+                
+                buttonClicked[bNUm - 1] = bNUm;
+                if(id == 2 && maxTurns == turnsMade ) {
+                    endGame_msg();
+                } 
+                else {
+                    Thread t = new Thread(new Runnable() {
+                        public void run() {
+                            updateTurn();
+                        }
+                    });
+                    t.start(); 
+                }}
         };
 
-        b1.addActionListener(al);
-        b2.addActionListener(al);
-        b3.addActionListener(al);
-        b4.addActionListener(al);
-
-        
+        for( int i = 0; i < 16; i++) {
+            grid[i].addActionListener(al);
+            
+        }
     }
 
     public void toggleButtons() {
-        b1.setEnabled(buttonEnabled);
-        b2.setEnabled(buttonEnabled);
-        b3.setEnabled(buttonEnabled);
-        b4.setEnabled(buttonEnabled);
+        for( int i = 0; i < 16; i++) {
+            grid[i].setEnabled(buttonEnabled);
+        }
+    }
+
+    public void endGame_msg() {
+        grid[4].setFont(new Font("Arial", Font.BOLD, 20));
+        grid[5].setFont(new Font("Arial", Font.BOLD, 20));
+        grid[6].setFont(new Font("Arial", Font.BOLD, 20));
+        grid[7].setFont(new Font("Arial", Font.BOLD, 20));
+        if(otherplayer_point < myPoints){  
+            grid[4].setText("You");
+            grid[5].setText("are");
+            grid[6].setText("a");
+            grid[7].setText("Winner");
+        }
+        if(otherplayer_point > myPoints) {
+            grid[4].setText("Better");
+            grid[5].setText("luck");
+            grid[6].setText("next");
+            grid[7].setText("time");
+        }
     }
 
     public void updateTurn() {
         int n = cc.bnum_received();
         System.out.println("Other player clicked button #" + n + ". Your turn.");
+        otherplayer_point += values[n-1];
         buttonEnabled = true;
         toggleButtons();
-        for(int i = 0; i< 4; i++){
-            if( buttonClicked[i] == 1)
-                b1.setEnabled(false);
-            else if (buttonClicked[i] ==2) 
-                b2.setEnabled(false);
-            else if(buttonClicked[i] == 3)
-                b3.setEnabled(false);
-            else if(buttonClicked[i] == 4)
-                b4.setEnabled(false);
+        for(int i = 0; i< 16; i++){
+            if( buttonClicked[i] == i + 1)
+                grid[i].setEnabled(false);
+        }
+
+        if( id == 1 && maxTurns == turnsMade) {
+            endGame_msg();
         }
         
     }
@@ -174,10 +167,9 @@ public class Client extends JFrame {
                 id = in.readInt();
                 System.out.println("Player ID is: " + id);
                 maxTurns = in.readInt()/2;
-                values[0] = in.readInt();
-                values[1] = in.readInt();
-                values[2] = in.readInt();
-                values[3] = in.readInt();
+                for(int i = 0; i < 16; i++) {
+                    values[i] = in.readInt();
+                }
             } catch (IOException ex) {
                 System.out.println("ClientConnect");
             }
@@ -196,14 +188,6 @@ public class Client extends JFrame {
                 n = in.readInt();
                 System.out.println("Another player clicked button: " + n);
                 buttonClicked[n-1] = n;
-                /*if( n == 1)
-                    b1.setEnabled(false);
-                else
-                    b2.setEnabled(false);
-                /*else if(n == 3)
-                    b3.setEnabled(false);
-                else if(n == 4)
-                    b4.setEnabled(false);*/
             } catch (IOException ex) {
                 System.out.println("bnum_received");
             }
@@ -212,7 +196,7 @@ public class Client extends JFrame {
     }
 
     public static void main(String[] args) {
-        Client c = new Client(500, 100);
+        Client c = new Client(500, 500);
         c.connect_Sever();
         c.setUpGUI();
         c.setUpButtons();
