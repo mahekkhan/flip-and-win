@@ -43,7 +43,7 @@ public class Client extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane.setLayout(new GridLayout(1, 5));
         contentPane.add(message);
-        message.setText("Player " + id);
+        message.setText("Player " + id + "/n Points: " + myPoints);
         message.setWrapStyleWord(true);
         message.setLineWrap(true);
         message.setEditable(false);
