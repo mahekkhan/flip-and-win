@@ -4,7 +4,11 @@ import java.io.*;
 import java.net.*;
 import java.awt.event.*;
 
-
+/*
+ * Create client connection
+ * Set up GUI and buttons
+ * Run the game from server
+ */
 public class Client extends JFrame {
     private int width;
     private int height;
@@ -68,7 +72,6 @@ public class Client extends JFrame {
         cc = new ClientConnect();
     }
 
-
     public void setUpButtons() {
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -84,13 +87,11 @@ public class Client extends JFrame {
                 String value = String.valueOf(values[bNUm - 1]);
                 
                 for(int i = 1; i<= 16; i++) {
-                    
                     if(bNUm == i) {
                         grid[i-1].setFont(new Font("Arial", Font.BOLD, 20));
                         grid[i-1].setText(value);
                     }
                 }
-                
                 
                 buttonClicked[bNUm - 1] = bNUm;
                 if(id == 2 && maxTurns == turnsMade ) {
@@ -108,7 +109,6 @@ public class Client extends JFrame {
 
         for( int i = 0; i < 16; i++) {
             grid[i].addActionListener(al);
-            
         }
     }
 
@@ -118,6 +118,7 @@ public class Client extends JFrame {
         }
     }
 
+    // Print result on player's gameboard
     public void endGame_msg() {
         grid[4].setFont(new Font("Arial", Font.BOLD, 20));
         grid[5].setFont(new Font("Arial", Font.BOLD, 20));
@@ -137,6 +138,7 @@ public class Client extends JFrame {
         }
     }
 
+    // Update player's turn concurrently
     public void updateTurn() {
         int n = cc.bnum_received();
         System.out.println("Other player clicked button #" + n + ". Your turn.");
@@ -148,17 +150,19 @@ public class Client extends JFrame {
                 grid[i].setEnabled(false);
         }
 
+        // Announce result to player
         if( id == 1 && maxTurns == turnsMade) {
             endGame_msg();
         }
-        
     }
 
+    // Set up client connection
     private class ClientConnect {
         private Socket s;
         private DataInputStream in;
         private DataOutputStream out;
 
+        // Get inputStream and outputStream from Server to read from server.
         public ClientConnect() {
             try{
                 s = new Socket("localhost", 2321);
@@ -174,6 +178,8 @@ public class Client extends JFrame {
                 System.out.println("ClientConnect");
             }
         }
+
+        // Get button number player clicked from the outputStrema
         public void bnum_clicked(int n) {
             try {
                 out.writeInt(n);
@@ -182,6 +188,8 @@ public class Client extends JFrame {
                 System.out.println("bnum_clicked");
             }
         }
+
+        // Get button number the other player clicked from the inputStream
         public int bnum_received() {
             int n = -1;
             try {
@@ -195,6 +203,7 @@ public class Client extends JFrame {
         }
     }
 
+    // Main program
     public static void main(String[] args) {
         Client c = new Client(500, 500);
         c.connect_Sever();
