@@ -57,7 +57,7 @@ public class Client extends JFrame {
 
         if( id == 1)
             buttonEnabled = true;
-        else {
+        else if ( id == 2) {
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
@@ -66,7 +66,7 @@ public class Client extends JFrame {
             });
             t.start();    
         }
-        /*else if (id == 3){
+        else if (id == 3){
             buttonEnabled = false;
             Thread t = new Thread(new Runnable() {
                 public void run() {
@@ -83,7 +83,7 @@ public class Client extends JFrame {
                 }
             });
             t.start();    
-        }*/
+        }
 
         toggleButtons();
         
@@ -114,10 +114,12 @@ public class Client extends JFrame {
                 else if(bNUm == 2){
                     b2.setText(value);
                 }
-                else if(bNUm == 3)
+                else if(bNUm == 3){
                     b3.setText(value);
-                else if(bNUm == 4)
+                }
+                else if(bNUm == 4){
                     b4.setText(value);
+                }
                 buttonClicked[bNUm - 1] = bNUm;
                 Thread t = new Thread(new Runnable() {
                     public void run() {
@@ -173,7 +175,7 @@ public class Client extends JFrame {
                 out = new DataOutputStream(s.getOutputStream());
                 id = in.readInt();
                 System.out.println("Player ID is: " + id);
-                maxTurns = in.readInt()/2;
+                maxTurns = in.readInt()/4;
                 values[0] = in.readInt();
                 values[1] = in.readInt();
                 values[2] = in.readInt();
@@ -196,14 +198,6 @@ public class Client extends JFrame {
                 n = in.readInt();
                 System.out.println("Another player clicked button: " + n);
                 buttonClicked[n-1] = n;
-                /*if( n == 1)
-                    b1.setEnabled(false);
-                else
-                    b2.setEnabled(false);
-                /*else if(n == 3)
-                    b3.setEnabled(false);
-                else if(n == 4)
-                    b4.setEnabled(false);*/
             } catch (IOException ex) {
                 System.out.println("bnum_received");
             }
