@@ -24,6 +24,8 @@ public class Client extends JFrame {
     private int otherplayer_point;
     private ClientConnect cc;
 
+    // Client class
+    // Generate grid and buttons
     public Client(int w, int h) {
         width = w;
         height = h;
@@ -41,6 +43,7 @@ public class Client extends JFrame {
         buttonClicked = new int[16];
     }
 
+    // Set up gameboard interface 
     public void setUpGUI() {
         this.setSize(width, height);
         this.setTitle("Flip-and-Win Game" + " Player " + id);
@@ -64,14 +67,15 @@ public class Client extends JFrame {
         }
         
         toggleButtons();
-        
         this.setVisible(true);
     }
 
+    // Create new player connection
     private void connect_Sever() {
         cc = new ClientConnect();
     }
 
+    // Set up buttons on the gameboard and handle button's action
     public void setUpButtons() {
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -81,7 +85,7 @@ public class Client extends JFrame {
                 System.out.println("Turns made: " + turnsMade);
                 myPoints += values[bNUm -1];
                 System.out.println("Points: " + myPoints);
-                buttonEnabled = true;
+                buttonEnabled = false;
                 toggleButtons();
                 cc.bnum_clicked(bNUm);
                 String value = String.valueOf(values[bNUm - 1]);
@@ -112,6 +116,7 @@ public class Client extends JFrame {
         }
     }
 
+    // Enable button when toggled
     public void toggleButtons() {
         for( int i = 0; i < 16; i++) {
             grid[i].setEnabled(buttonEnabled);
@@ -138,7 +143,7 @@ public class Client extends JFrame {
         }
     }
 
-    // Update player's turn concurrently
+    // Update player's turn and lock buttons concurrently 
     public void updateTurn() {
         int n = cc.bnum_received();
         System.out.println("Other player clicked button #" + n + ". Your turn.");
