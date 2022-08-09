@@ -3,7 +3,9 @@ import java.net.*;
 import java.util.Arrays;
 import java.util.Collections;
 
-
+/*
+ * Server class to handle multiple clients connecting
+ */
 public class Server {
     private ServerSocket ss;
     private int player_num;
@@ -17,12 +19,14 @@ public class Server {
     private int p1_btn;
     private int p2_btn;
 
+    //Server class constructor
     public Server() {
         player_num = 0;
         turnsMade = 0;
         maxTurns = 16;
         values = new int[16];
 
+        //Initialize the grid with random values and display the values in terminal
         for (int i = 0; i < 16; i++) {
             values[i] = (int) Math.ceil(Math.random() * 100);
             System.out.println("Values: " + (i+1) + " is " + values[i]);
@@ -35,6 +39,10 @@ public class Server {
         }
     }
 
+    /*
+     * Function to connect clients
+     * Displays in terminal which player has joined
+     */
     public void connect_acc() {
         try {
             System.out.println("waiting...");
@@ -74,6 +82,9 @@ public class Server {
             }
         }
 
+        /* 
+         * Server class run function
+         */
         public void run() {
             try {
                 out.writeInt(playerID);
@@ -82,6 +93,8 @@ public class Server {
                     out.writeInt(values[i]);
                 }
                 out.flush();
+
+                //Handle multiple players
                 while (true) {
                     if(playerID == 1) {
                         p1_btn = in.readInt();
@@ -96,6 +109,8 @@ public class Server {
                         turnsMade++;
                         p2_point += values[p2_btn -1];
                     } 
+
+                    //Show winner in the terminal and winner's points
                     if(turnsMade == maxTurns) {
                         Integer[] points = {p1_point, p2_point};
                         int max = Collections.max(Arrays.asList(points));
@@ -123,6 +138,7 @@ public class Server {
         }
     }
 
+    //Main function
     public static void main(String[] args) {
         Server s = new Server();
         s.connect_acc();
